@@ -72,12 +72,12 @@ public class FolderScanner {
 	
 	private Callable createWorker(ExecutorService service, Path path) {
 		Callable callable = () -> {
-			System.out.println("processing... " +
-					path.toFile().getAbsolutePath());
+	
 			String newFilePath = path.toFile().getAbsolutePath().replace(folderNameToObserve, folderNameToEncrypt);
-			Paths.get(newFilePath).toFile().mkdirs();
+			Paths.get(newFilePath).toFile().getParentFile().mkdirs();
 			IOUtils.copyLarge(new FileInputStream(path.toFile()),
 					new FileOutputStream(newFilePath + "_encripted"));
+			System.out.println("processing... " + path.toFile().getAbsolutePath() + "->" + newFilePath + "_encripted");
 			return null;
 		};
 		service.submit(callable);
