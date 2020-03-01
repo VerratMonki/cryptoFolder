@@ -1,5 +1,10 @@
 package com.nikondsl.cryptoFolder.scanner;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -69,6 +74,10 @@ public class FolderScanner {
 		Callable callable = () -> {
 			System.out.println("processing... " +
 					path.toFile().getAbsolutePath());
+			String newFilePath = path.toFile().getAbsolutePath().replace(folderNameToObserve, folderNameToEncrypt);
+			Paths.get(newFilePath).toFile().mkdirs();
+			IOUtils.copyLarge(new FileInputStream(path.toFile()),
+					new FileOutputStream(newFilePath + "_encripted"));
 			return null;
 		};
 		service.submit(callable);
